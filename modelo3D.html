@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo 3D - Parque Arqueológico Cochasquí</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap" async defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-green-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex space-x-6">
+                <a href="Pagina Principal.html" class="hover:underline">Inicio</a>
+                <a href="gamificacion.html" class="hover:underline">Gamificación</a>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="window.location.href='login.html'" class="bg-white text-green-600 font-medium py-2 px-4 rounded shadow hover:bg-gray-200">Sign In</button>
+                <button onclick="window.location.href='register.html'" class="bg-black text-white font-medium py-2 px-4 rounded shadow hover:bg-gray-700">Subscribe</button>
+            </div>
+        </div>
+    </nav>
+
+    <h1 class="text-3xl font-bold text-green-800 text-center my-6">Modelo 3D - Cochasquí</h1>
+
+    <div class="flex justify-center">
+        <model-viewer 
+            src="modelo_cochasqui.glb" 
+            alt="Modelo 3D de Cochasquí"
+            auto-rotate 
+            camera-controls 
+            ar
+            class="w-full max-w-2xl h-96">
+        </model-viewer>
+    </div>
+
+    <!-- Contenedor del juego de Unity -->
+    <div class="flex justify-center my-8">
+        <iframe src="Build/index.html" class="w-full max-w-4xl h-[600px] border-2 border-gray-300 shadow-lg rounded-lg"></iframe>
+    </div>
+
+    <!-- Sección de Mapa y Feedback -->
+    <div class="container mx-auto px-6 mt-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Mapa -->
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.8164877430327!2d-78.30693122544314!3d0.05491549994454766
+           !2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e2a74b7fe4961d7%3A0xbfc83f47ffaa481b!2sParque%20Arqueol%C3%B3gico%20Cochasqui!
+           5e0!3m2!1ses-419!2sec!4v1739974939722!5m2!1ses-419!2sec" 
+           width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <!-- Feedback -->
+            <div class="p-4 bg-white shadow-md rounded text-center">
+                <h2 class="text-xl font-bold text-green-800 mb-4">Déjanos tu opinión</h2>
+                <p class="text-gray-700 mb-4">Ayúdanos a mejorar dejando tu comentario en nuestro formulario de Google Forms.</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcdxiixZdeihekz2ReLD68tGdtZ_7puiDEXZgB_YxZm101hg/viewform?usp=header"
+                 target="_blank" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Dar Feedback</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-green-800 text-white text-center py-4 mt-12">
+        <p>&copy; 2024 Parque Arqueológico Cochasquí. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
