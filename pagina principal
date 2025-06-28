@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parque Arqueológico Cochasquí</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Barra de Navegación -->
+    <nav class="bg-green-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Enlaces de navegación alineados a la izquierda -->
+            <div class="flex space-x-6">
+                <a href="#" class="hover:underline">Inicio</a>
+                <a href="modelo3D.html" class="hover:underline">Modelo 3D</a>
+                <a href="gamificacion.html" class="hover:underline">Gamificación</a>
+            </div>
+            
+            <!-- Botones alineados a la derecha -->
+            <div class="flex space-x-4">
+                <button onclick="window.location.href='login.html'" class="bg-white text-green-600 font-medium py-2 px-4 rounded shadow hover:bg-gray-200">Sign In</button>
+                <button onclick="window.location.href='register.html'" class="bg-black text-white font-medium py-2 px-4 rounded shadow hover:bg-gray-700">Subscribe</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Encabezado con el título -->
+    <header class="bg-green-800 text-white py-4 text-center">
+        <h1 class="text-3xl font-bold">Parque Arqueológico Cochasquí</h1>
+    </header>
+
+    <!-- Imagen principal -->
+    <section class="relative">
+        <img src="Piramide.jpg" alt="Vista aérea del Parque Arqueológico Cochasquí" class="w-full h-96 object-cover">
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="container mx-auto px-6 py-8">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+            <!-- Imagen fija a la izquierda -->
+            <div class="text-center">
+                <img src="Piramide1.jpg" alt="Pirámides de Cochasquí" class="w-full max-w-sm mx-auto h-auto rounded shadow-lg">
+                <p class="mt-2 text-sm text-gray-600">Pirámides truncas de Cochasquí, una muestra del legado prehispánico.</p>
+            </div>
+
+            <!-- Historia a la derecha -->
+            <div>
+                <h2 class="text-2xl font-bold text-green-800">Historia del Parque</h2>
+                <p class="mt-4 text-gray-700" style="text-align: justify;"> 
+                    El Parque Arqueológico Cochasquí es un sitio preincaico ubicado en la provincia de Pichincha, Ecuador, a 
+                    aproximadamente 3.100 metros sobre el nivel del mar. Se estima que fue habitado entre los años 500 y 1500 d.C.
+                     por la cultura Quitu-Cara, una de las civilizaciones más importantes de la región andina antes de la llegada de los incas.
+                </p>
+                <p class="mt-4 text-gray-700" style="text-align: justify;"> 
+                    El complejo está compuesto por 15 pirámides truncas y 21 tolas funerarias. Estas estructuras fueron construidas con bloques 
+                    de cangahua, una roca volcánica compacta que permitió su preservación a lo largo de los siglos. Se cree que las pirámides
+                     tenían múltiples funciones, como centro ceremonial, astronómico y administrativo. Además, estudios arqueológicos han 
+                     demostrado que algunas de estas estructuras estaban alineadas con eventos astronómicos, como los solsticios y equinoccios, 
+                     lo que sugiere un avanzado conocimiento astronómico por parte de sus habitantes.
+                </p>
+                <p class="mt-4 text-gray-700" style="text-align: justify;"> 
+                    Durante la época incaica, Cochasquí pudo haber servido como un punto estratégico y de resistencia contra la expansión del 
+                    Imperio Inca en la región. A diferencia de otros asentamientos que fueron dominados por los incas, Cochasquí muestra pocas 
+                    evidencias de ocupación inca, lo que indica que pudo haber mantenido cierta autonomía hasta la llegada de los españoles en el siglo XVI.
+                </p>
+                <p class="mt-4 text-gray-700" style="text-align: justify;"> 
+                    Las primeras investigaciones científicas en el sitio comenzaron en el siglo XX, con estudios realizados por el arqueólogo
+                     ecuatoriano Max Uhle y más tarde por Emilio Estrada y Galo Ramón Valarezo. Gracias a estas investigaciones, se han encontrado restos
+                     de cerámica, herramientas y evidencias de prácticas agrícolas avanzadas, lo que confirma que la cultura Quitu-Cara tenía un alto nivel 
+                     de organización social y económica.
+                </p>
+                <p class="mt-4 text-gray-700" style="text-align: justify;"> 
+                    Hoy en día, Cochasquí es considerado uno de los sitios arqueológicos más importantes de Ecuador, y su estudio sigue proporcionando 
+                    información clave sobre las civilizaciones prehispánicas de los Andes.
+                </p>
+            </div>
+        </div>
+
+        <!-- Galería de imágenes -->
+        <h2 class="text-2xl font-bold text-green-800 mt-12 text-center">Galería de Imágenes</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
+            <img src="Galeria.jpg" alt="Imagen 1" class="w-full h-40 object-cover rounded shadow">
+            <img src="Galeria1.jpg" alt="Imagen 2" class="w-full h-40 object-cover rounded shadow">
+            <img src="Galeria2.jpg" alt="Imagen 3" class="w-full h-40 object-cover rounded shadow">
+            <img src="Galeria3.jpg" alt="Imagen 4" class="w-full h-40 object-cover rounded shadow">
+            <img src="Galeria4.jpg" alt="Imagen 5" class="w-full h-40 object-cover rounded shadow">
+            <img src="Galeria5.jpg" alt="Imagen 6" class="w-full h-40 object-cover rounded shadow">
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-green-800 text-white text-center py-4 mt-12">
+        <p>&copy; 2024 Parque Arqueológico Cochasquí. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Google ID Token:", response.credential);
+            alert("Ingreso exitoso con Google");
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "T458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+        };
+    </script>
+</body>
+</html>
+
