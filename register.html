@@ -1,0 +1,60 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="absolute top-4 left-4">
+        <a href="Pagina Principal.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
+    </div>
+    <div class="bg-white p-8 rounded shadow-md w-96">
+        <h2 class="text-2xl font-bold text-center text-green-800">Registrarse</h2>
+        <form class="mt-4">
+            <input type="text" placeholder="Nombre completo" class="w-full p-2 border rounded mb-2">
+            <input type="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2">
+            <input type="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2">
+            <input type="password" placeholder="Confirmar contraseña" class="w-full p-2 border rounded mb-2">
+            <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Registrarse</button>
+        </form>
+
+        <!-- Botón de registro con Google -->
+        <div class="flex items-center justify-center my-4">
+            <div id="g_id_onload"
+                data-client_id="458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com"
+                data-context="signup"
+                data-ux_mode="popup"
+                data-callback="handleCredentialResponse"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" data-type="standard"></div>
+        </div>
+
+        <p class="text-center text-sm mt-4">¿Ya tienes cuenta? <a href="login.html" class="text-green-600 hover:underline">Inicia sesión</a></p>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("ID Token de Google:", response.credential);
+            alert("Registro exitoso con Google");
+            // Aquí puedes enviar el token al backend para registrar al usuario
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "TU_CLIENT_ID_AQUI",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.querySelector(".g_id_signin"),
+                { theme: "outline", size: "large" }
+            );
+        };
+    </script>
+</body>
+</html>
