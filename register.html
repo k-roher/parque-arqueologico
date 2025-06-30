@@ -40,11 +40,9 @@
 
     <script>
         function handleCredentialResponse(response) {
-            console.log("ID Token de Google:", response.credential);
-            alert("Registro exitoso con Google");
-            // Aquí puedes enviar el token al backend para registrar al usuario
-        }
-
+    const idToken = response.credential; // ← AQUÍ ESTÁ EL JWT
+    console.log("ID Token JWT:", idToken);
+}
         window.onload = function () {
             google.accounts.id.initialize({
                 client_id: "458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com",
