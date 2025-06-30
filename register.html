@@ -55,6 +55,24 @@
                 { theme: "outline", size: "large" }
             );
         };
+
+        function handleCredentialResponse(response) {
+    // Enviar el token a tu backend para registrar el usuario
+    fetch('register.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `token=${response.credential}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = "Pagina Principal.html"; // Redirige si el registro es exitoso
+        } else {
+            alert("Error al registrar con Google");
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
     </script>
 </body>
 </html>
