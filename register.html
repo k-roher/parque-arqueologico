@@ -10,11 +10,16 @@
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <!-- Botón para volver al inicio -->
     <div class="absolute top-4 left-4">
         <a href="index.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
     </div>
+
+    <!-- Formulario de registro -->
     <div class="bg-white p-8 rounded shadow-md w-96">
         <h2 class="text-2xl font-bold text-center text-green-800">Registrarse</h2>
+
         <form class="mt-4">
             <input type="text" placeholder="Nombre completo" class="w-full p-2 border rounded mb-2">
             <input type="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2">
@@ -38,11 +43,28 @@
         <p class="text-center text-sm mt-4">¿Ya tienes cuenta? <a href="login.html" class="text-green-600 hover:underline">Inicia sesión</a></p>
     </div>
 
+    <!-- Script para manejar el token de Google -->
     <script>
         function handleCredentialResponse(response) {
-    const idToken = response.credential; // ← AQUÍ ESTÁ EL JWT
-    console.log("ID Token JWT:", idToken);
-}
+            const idToken = response.credential;
+
+            // Enviar el ID token al servidor (register.php)
+            fetch('register.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `token=${idToken}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "Pagina Principal.html";
+                } else {
+                    alert("Error al registrar con Google");
+                }
+            })
+            .catch(error => console.error('Error al registrar con Google:', error));
+        }
+
         window.onload = function () {
             google.accounts.id.initialize({
                 client_id: "458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com",
@@ -53,24 +75,6 @@
                 { theme: "outline", size: "large" }
             );
         };
-
-        function handleCredentialResponse(response) {
-    // Enviar el token a tu backend para registrar el usuario
-    fetch('register.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `token=${response.credential}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = "Pagina Principal.html"; // Redirige si el registro es exitoso
-        } else {
-            alert("Error al registrar con Google");
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
     </script>
 </body>
 </html>
