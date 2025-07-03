@@ -1,27 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registro con Google</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iniciar Sesión</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
 
-  <h2>Inicia sesión o regístrate con Google</h2>
-
-  <!-- Google Sign-In -->
-  <div id="g_id_onload"
-    data-client_id="458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com"
-    data-context="signup"
-    data-ux_mode="popup"
-    data-callback="handleCredentialResponse"
-    data-auto_prompt="false">
+  <div class="absolute top-4 left-4">
+    <a href="Pagina Principal.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
   </div>
-  <div class="g_id_signin" data-type="standard"></div>
+
+  <div class="bg-white p-8 rounded shadow-md w-96">
+    <h2 class="text-2xl font-bold text-center text-green-800">Iniciar Sesión</h2>
+
+    <form id="loginForm" class="mt-4">
+      <input type="email" id="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2" required>
+      <input type="password" id="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2" required>
+      <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Ingresar</button>
+    </form>
+
+    <div class="flex items-center justify-center my-4">
+      <div id="g_id_onload"
+           data-client_id="TU_CLIENT_ID_AQUI"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
+    <p id="error-message" class="text-red-600 text-center mt-4 hidden"></p>
+    <p class="text-center text-sm mt-4">¿No tienes cuenta? <a href="register.html" class="text-green-600 hover:underline">Regístrate</a></p>
+  </div>
 
   <script>
-    // Decodificar token JWT
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      fetch('login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "Pagina Principal.html";
+        } else {
+          document.getElementById('error-message').textContent = "Credenciales incorrectas.";
+          document.getElementById('error-message').classList.remove('hidden');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
     function parseJwt(token) {
       try {
         return JSON.parse(atob(token.split('.')[1]));
@@ -30,32 +68,26 @@
       }
     }
 
-    // Manejar respuesta de Google
     function handleCredentialResponse(response) {
       const data = parseJwt(response.credential);
+      if (!data) return;
 
-      if (data) {
-        // Enviar datos a PHP
-        fetch("https://if0_39355347.infinityfreeapp.com/guardar_usuario.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `name=${encodeURIComponent(data.name)}&email=${encodeURIComponent(data.email)}&picture=${encodeURIComponent(data.picture)}&google_id=${data.sub}`
-        })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert("Bienvenido " + data.name);
-            window.location.href = "Pagina Principal.html"; // redirigir
-          } else {
-            alert("Error: " + data.message);
-          }
-        })
-        .catch(err => console.error("Error:", err));
-      } else {
-        alert("Token de Google inválido.");
-      }
+      fetch('login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `token=${encodeURIComponent(response.credential)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "Pagina Principal.html";
+        } else {
+          document.getElementById('error-message').textContent = "No estás registrado.";
+          document.getElementById('error-message').classList.remove('hidden');
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
   </script>
-
 </body>
 </html>
