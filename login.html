@@ -1,92 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-    
-    <!-- Botón para volver a la Página Principal -->
-    <div class="absolute top-4 left-4">
-        <a href="index.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
+  <div class="absolute top-4 left-4">
+    <a href="index.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
+  </div>
+
+  <div class="bg-white p-8 rounded shadow-md w-96">
+    <h2 class="text-2xl font-bold text-center text-green-800">Iniciar Sesión</h2>
+
+    <form id="loginForm" class="mt-4">
+      <input type="email" id="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2" required>
+      <input type="password" id="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2" required>
+      <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Ingresar</button>
+    </form>
+
+    <div class="flex items-center justify-center my-4">
+      <div id="g_id_onload"
+        data-client_id="458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
     </div>
 
-    <!-- Contenedor del Login -->
-    <div class="bg-white p-8 rounded shadow-md w-96">
-        <h2 class="text-2xl font-bold text-center text-green-800">Iniciar Sesión</h2>
+    <p id="error-message" class="text-red-600 text-center mt-4 hidden"></p>
 
-        <!-- Formulario de Login Manual -->
-        <form id="loginForm" class="mt-4">
-            <input type="email" id="email" name="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2" required>
-            <input type="password" id="password" name="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2" required>
-            <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Ingresar</button>
-        </form>
+    <p class="text-center text-sm mt-4">¿No tienes cuenta? <a href="register.html" class="text-green-600 hover:underline">Regístrate</a></p>
+  </div>
 
-        <!-- Botón de inicio de sesión con Google -->
-        <div class="flex items-center justify-center my-4">
-            <div id="g_id_onload"
-                data-client_id="458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-callback="handleCredentialResponse"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin" data-type="standard"></div>
-        </div>
+  <script>
+    // Enviar login manual
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
-        <!-- Mensaje de error -->
-        <p id="error-message" class="text-red-600 text-center mt-4 hidden"></p>
-
-        <p class="text-center text-sm mt-4">¿No tienes cuenta? <a href="register.html" class="text-green-600 hover:underline">Regístrate</a></p>
-    </div>
-
-    <script>
-        // Enviar el formulario manualmente a login.php
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            fetch('login.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `email=${email}&password=${password}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "Pagina Principal.html"; // Redirige si el login es exitoso
-                } else {
-                    document.getElementById('error-message').textContent = "Credenciales incorrectas o usuario no registrado.";
-                    document.getElementById('error-message').classList.remove('hidden');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
-        // Manejar el login con Google
-        function handleCredentialResponse(response) {
-            fetch('login.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `token=${response.credential}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "Pagina Principal.html"; // Redirige si el login es exitoso
-                } else {
-                    document.getElementById('error-message').textContent = "No estás registrado. Por favor, regístrate.";
-                    document.getElementById('error-message').classList.remove('hidden');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+      fetch('https://TUDOMINIO.infinityfreeapp.com/login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "Pagina Principal.html";
+        } else {
+          document.getElementById('error-message').textContent = data.message || "Credenciales incorrectas.";
+          document.getElementById('error-message').classList.remove('hidden');
         }
-    </script>
+      })
+      .catch(error => console.error('Error:', error));
+    });
 
-</body>
-</html>
+    // Google login
+    function handleCredentialResponse(response) {
+      fetch('https://if0_39355347.infinityfreeapp.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `token=${encodeURIComponent(response.credential)}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "Pagina Principal.html";
+        } else {
+
