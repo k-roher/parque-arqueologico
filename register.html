@@ -45,36 +45,38 @@
 
     <!-- Script para manejar el token de Google -->
     <script>
-        function handleCredentialResponse(response) {
-            const idToken = response.credential;
+    function handleCredentialResponse(response) {
+        const idToken = response.credential;
+        console.log("ID Token JWT:", idToken);
 
-            // Enviar el ID token al servidor (register.php)
-            fetch('https://tusitio.infinityfreeapp.com/register.php', {
-   method: 'POST',
-   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-   body: `token=${response.credential}`
-});
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "Pagina Principal.html";
-                } else {
-                    alert("Error al registrar con Google");
-                }
-            })
-            .catch(error => console.error('Error al registrar con Google:', error));
-        }
+        // Enviar el token a tu servidor
+        fetch('register.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `token=${idToken}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                window.location.href = "Pagina Principal.html";
+            } else {
+                alert("Error al registrar con Google: " + data.message);
+            }
+        })
+        .catch(error => console.error('Error en el fetch:', error));
+    }
 
-        window.onload = function () {
-            google.accounts.id.initialize({
-                client_id: "458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com",
-                callback: handleCredentialResponse
-            });
-            google.accounts.id.renderButton(
-                document.querySelector(".g_id_signin"),
-                { theme: "outline", size: "large" }
-            );
-        };
-    </script>
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: "458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.querySelector(".g_id_signin"),
+            { theme: "outline", size: "large" }
+        );
+    };
+</script>
 </body>
 </html>
