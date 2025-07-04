@@ -5,51 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Iniciar Sesión</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 
   <div class="bg-white p-8 rounded shadow-md w-96">
     <h2 class="text-2xl font-bold text-center text-green-800">Iniciar Sesión</h2>
 
+    <!-- FORMULARIO TRADICIONAL -->
     <form id="loginForm" class="mt-4">
       <input type="email" name="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2" required>
       <input type="password" name="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2" required>
       <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Ingresar</button>
     </form>
 
+    <!-- INICIO CON GOOGLE -->
+    <div class="flex justify-center mt-4">
+      <div id="g_id_onload"
+           data-client_id="TU_CLIENT_ID_DE_GOOGLE"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard"></div>
+    </div>
+
     <p id="error-message" class="text-red-600 text-center mt-4 hidden"></p>
     <p class="text-center text-sm mt-4">¿No tienes cuenta? <a href="register.html" class="text-green-600 hover:underline">Regístrate</a></p>
   </div>
+<script>
+  // INICIO DE SESIÓN TRADICIONAL
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const email = form.email.value;
-      const password = form.password.value;
-
-      fetch("https://parquearqueologico2025.rf.gd/login.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          window.location.href = "Pagina Principal.html";
-        } else {
-          const error = document.getElementById("error-message");
-          error.textContent = "Credenciales incorrectas.";
-          error.classList.remove("hidden");
-        }
-      })
-      .catch(err => {
-        alert("Error al iniciar sesión.");
-        console.error(err);
-      });
+    fetch('https://parquearqueologico2025.rf.gd/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = "Pagina Principal.html";
+      } else {
+        showError("Credenciales incorrectas.");
+      }
+    })
+    .catch(err => {
+      console.error("Error en login tradicional:", err);
+      showError("Error al iniciar sesión.");
     });
-  </script>
+  });
+
+  // INICIO DE SESIÓN CON GOOGLE
+  function parseJwt(token) {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function handleCredentialResponse(response) {
+    const data = parseJwt(response.credential);
+    if (!data) return showError("Token inválido");
+
+    // Enviar token o correo directamente al backend
+    fetch('https://parquearqueologico2025.rf.gd/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `token=${encodeURIComponent(response.credential)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = "Pagina Principal.html";
+      } else {
+        showError("No estás registrado.");
+      }
+    })
+    .catch(err => {
+      console.error("Error en login con Google:", err);
+      showError("Error al iniciar con Google.");
+    });
+  }
+
+  function showError(message) {
+    const errorBox = document.getElementById('error-message');
+    errorBox.textContent = message;
+    errorBox.classList.remove('hidden');
+  }
+</script>
 </body>
 </html>
