@@ -52,7 +52,8 @@
       const data = parseJwt(response.credential);
       if (!data) return;
 
-      fetch('guardar_usuario.php', {
+   fetch('https://if0_39355347.infinityfreeapp.com/guardar_usuario.php')
+     {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `name=${encodeURIComponent(data.name)}&email=${encodeURIComponent(data.email)}&picture=${encodeURIComponent(data.picture)}&google_id=${data.sub}`
