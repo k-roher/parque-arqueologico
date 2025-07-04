@@ -2,70 +2,54 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
-  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Iniciar Sesión</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-
-  <div class="absolute top-4 left-4">
-    <a href="index.html" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Home</a>
-  </div>
 
   <div class="bg-white p-8 rounded shadow-md w-96">
     <h2 class="text-2xl font-bold text-center text-green-800">Iniciar Sesión</h2>
 
-    <form class="mt-4">
-    <input type="text" name="nombre" placeholder="Nombre completo" class="w-full p-2 border rounded mb-2">
-    <input type="email" name="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2">
-    <input type="password" name="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2">
-    <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Registrarse</button>
-</form>
-    <div class="flex items-center justify-center my-4">
-      <div id="g_id_onload"
-           data-client_id="458858792485-bfj140uka5egn1m60qct7nu8tlp032fe.apps.googleusercontent.com"
-           data-context="signin"
-           data-ux_mode="popup"
-           data-callback="handleCredentialResponse"
-           data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin" data-type="standard"></div>
-    </div>
+    <form id="loginForm" class="mt-4">
+      <input type="email" name="email" placeholder="Correo electrónico" class="w-full p-2 border rounded mb-2" required>
+      <input type="password" name="password" placeholder="Contraseña" class="w-full p-2 border rounded mb-2" required>
+      <button type="submit" class="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">Ingresar</button>
+    </form>
 
     <p id="error-message" class="text-red-600 text-center mt-4 hidden"></p>
     <p class="text-center text-sm mt-4">¿No tienes cuenta? <a href="register.html" class="text-green-600 hover:underline">Regístrate</a></p>
   </div>
-<script>
-document.querySelector("form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const nombre = document.querySelector('input[name="nombre"]').value;
-    const email = document.querySelector('input[name="email"]').value;
-    const password = document.querySelector('input[name="password"]').value;
 
-    fetch("https://parquearqueologico2025.rf.gd/guardar_usuario.php", {
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const email = form.email.value;
+      const password = form.password.value;
+
+      fetch("https://parquearqueologico2025.rf.gd/login.php", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: `nombre=${encodeURIComponent(nombre)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-    })
-    .then(res => res.json())
-    .then(data => {
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+      })
+      .then(res => res.json())
+      .then(data => {
         if (data.success) {
-            alert("Usuario registrado con éxito.");
-            window.location.href = "login.html";
+          window.location.href = "Pagina Principal.html";
         } else {
-            alert("Error: " + data.error);
+          const error = document.getElementById("error-message");
+          error.textContent = "Credenciales incorrectas.";
+          error.classList.remove("hidden");
         }
-    })
-    .catch(error => {
-        console.error("Error en el registro:", error);
-        alert("Error en el registro.");
+      })
+      .catch(err => {
+        alert("Error al iniciar sesión.");
+        console.error(err);
+      });
     });
-});
-</script>
+  </script>
 </body>
 </html>
